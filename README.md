@@ -17,14 +17,13 @@ Examples
 --------
 1. Run `restcli.py` with no arguments to get a list of requests
 
-        #restcli.py
+        $ restcli.py
         usage: restcli.py [-h] {httpbinput,httpbinvars,httpbin} ...
         restcli.py: error: too few arguments
-        #
 
 
 
-        #restcli.py -h
+        $ restcli.py -h
         usage: restcli.py [-h] {httpbinput,httpbinvars,httpbin} ...
 
         optional arguments:
@@ -33,11 +32,10 @@ Examples
         Requests:
           {httpbinput,httpbinvars,httpbin}
                                 The request to execute
-        #
 
 2. Run `restcli.py {profilename} -h` to get information on the saved request
 
-        #restcli.py httpbinvars -h
+        $ restcli.py httpbinvars -h
         usage: restcli.py httpbinvars [-h] [--profile {testprofile} | --no-profile]
                                       [--proxy protocol:host:port]
                                       [--verify | --no-verify]
@@ -79,7 +77,7 @@ Examples
 
 3. Actually make the `httpbinvars` request, notice that `{{headervar}}` and `{{paramvar}}` in the request are substituted with `value1` and `value2`.
 
-        #restcli.py httpbinvars value1 value2
+        $ restcli.py httpbinvars value1 value2
         {
           "url": "http://httpbin.org/get?myparam2=paramvalue2&myparam1=value2",
           "headers": {
@@ -99,5 +97,3 @@ Examples
           },
           "origin": "152.219.153.75"
         }
-        #
-
