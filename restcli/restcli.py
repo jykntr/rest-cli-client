@@ -368,7 +368,8 @@ class Options():
         return s
 
 
-if __name__ == '__main__':
+def main(args=sys.argv[1:]):
+
     # load config file
     config = Config(find_default_config_file())
 
@@ -406,3 +407,6 @@ if __name__ == '__main__':
             print json.dumps(r.json(), indent=2)
     else:
         print r.text
+
+if __name__ == '__main__':
+    main()
