@@ -1,1 +1,5 @@
 *.pyc
+build
+dist
+restcli.egg-info
+.idea
