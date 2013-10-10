@@ -355,7 +355,7 @@ class Options():
         for var in odict:
             if var == 'verify':
                 self.options[var] = odict[var]
-            if var == 'proxy':
+            if var == 'proxy' and len(odict.get('proxy', [])) > 0:
                 self.options['proxies'] = {}
 
                 # Variable proxy is a list of proxies
@@ -395,7 +395,7 @@ def main(args=sys.argv[1:]):
         params=request.params,
         data=request.body,
         verify=args.verify,
-        proxies=config.get_options().get_proxies()
+        proxies=options.get_proxies()
     )
 
     # Print request
