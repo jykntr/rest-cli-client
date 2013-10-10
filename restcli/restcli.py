@@ -8,6 +8,7 @@ import os
 import requests
 import sys
 
+from colorama import init
 from difflib import SequenceMatcher
 
 
@@ -369,6 +370,7 @@ class Options():
 
 
 def main(args=sys.argv[1:]):
+    init()
 
     # load config file
     config = Config(find_default_config_file())
