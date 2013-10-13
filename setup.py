@@ -6,7 +6,7 @@ setup(
     entry_points={
         'console_scripts': ['restcli = restcli.restcli:main']
     },
-
+    install_requires = ['requests>=2.0','Pygments>=1.6','colorama>=0.2.5'],
     package_data={
         'restcli': ['*.conf'],
     },
