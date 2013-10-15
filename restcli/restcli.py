@@ -40,27 +40,28 @@ def find_default_config_file():
         except:
             pass
 
-    raise Exception('Could find restcli.conf file in RESTCLI_CONF environment variable, the current directory or your home direcotry.')
+    raise Exception('Could not find restcli.conf file in RESTCLI_CONF environment variable, ' +
+                    'the current directory or your home directory.')
 
 
-def printDict(d, sep):
+def print_dictionary(d, separator):
     s = ""
     first = True
     for k, v in sorted(d.items()):
         if not first:
             s += ", "
 
-        s += u'{0}{1}{2}'.format(k, sep, v)
+        s += u'{0}{1}{2}'.format(k, separator, v)
         first = False
 
     return s
 
 
 class Profile():
-    def __init__(self, pdict):
-        if 'name' in pdict:
-            self.name = pdict.pop('name')
-            self.properties = pdict
+    def __init__(self, profile_dictionary):
+        if 'name' in profile_dictionary:
+            self.name = profile_dictionary.pop('name')
+            self.properties = profile_dictionary
         else:
             raise Exception('Profile object has no name')
 
@@ -71,39 +72,39 @@ class Profile():
 
 
 class Request():
-    def __init__(self, rdict):
+    def __init__(self, request_dictionary):
         self.name = ''
         self.method = ''
         self.url = ''
 
         for var in ['name', 'method', 'url']:
-            if var in rdict:
-                setattr(self, var, rdict.get(var))
+            if var in request_dictionary:
+                setattr(self, var, request_dictionary.get(var))
             else:
                 raise Exception("Request object has no " + var)
 
-        self.headers = rdict.get('headers', {})
-        self.params = rdict.get('params', {})
-        self.body = rdict.get('body', '')
+        self.headers = request_dictionary.get('headers', {})
+        self.params = request_dictionary.get('params', {})
+        self.body = request_dictionary.get('body', '')
 
     def get_variable_list(self):
-        allvars = list()
+        all_variables = list()
 
         if len(self.headers) > 0:
             for name, value in self.headers.items():
-                allvars = merge_sequences(allvars, get_variables(name))
-                allvars = merge_sequences(allvars, get_variables(value))
+                all_variables = merge_sequences(all_variables, get_variables(name))
+                all_variables = merge_sequences(all_variables, get_variables(value))
 
-        allvars = merge_sequences(allvars, get_variables(self.url))
+        all_variables = merge_sequences(all_variables, get_variables(self.url))
 
         if len(self.params) > 0:
             for name, value in self.params.items():
-                allvars = merge_sequences(allvars, get_variables(name))
-                allvars = merge_sequences(allvars, get_variables(value))
+                all_variables = merge_sequences(all_variables, get_variables(name))
+                all_variables = merge_sequences(all_variables, get_variables(value))
 
-        allvars = merge_sequences(allvars, get_variables(self.body))
+        all_variables = merge_sequences(all_variables, get_variables(self.body))
 
-        return allvars
+        return all_variables
 
     def substitute_variables(self, args):
         for var in self.get_variable_list():
@@ -130,9 +131,9 @@ class Request():
     def __str__(self):
         s = 'Request name: ' + self.name + os.linesep
         s += '  Method    : ' + self.method + os.linesep
-        s += '  Headers   : ' + printDict(self.headers, ": ") + os.linesep
+        s += '  Headers   : ' + print_dictionary(self.headers, ": ") + os.linesep
         s += '  URL       : ' + self.url + os.linesep
-        s += '  Parameters: ' + printDict(self.params, "=") + os.linesep
+        s += '  Parameters: ' + print_dictionary(self.params, "=") + os.linesep
         s += '  Body      : ' + self.body.__str__()
         return s
 
@@ -216,14 +217,13 @@ class ArgParser():
         self.requests = requests
         self.profiles = profiles
         self.options = options
+        self.args = None
 
         # Use a pre-parser to get options that aren't data driven by the config file.
         # Pre-parser checks global options and specified profile
         preparser = argparse.ArgumentParser(add_help=False)
         preparser = self._add_global_options(preparser)
         known_args, _ = preparser.parse_known_args()
-
-        print known_args
 
         # Now build real parser
         self.parser = argparse.ArgumentParser()
@@ -292,7 +292,8 @@ class ArgParser():
                         # Create optional group if it doesn't exist
                         optional_group = request_parser.add_argument_group(
                             title='Optional variable arguments',
-                            description='Variables that have a default value in the active profile (' + profile.name + ')'
+                            description='Variables that have a default value in the active profile ' +
+                                        '(' + profile.name + ')'
                         )
 
                     optional_group.add_argument(
@@ -306,7 +307,8 @@ class ArgParser():
                         # Create required group if it doesn't exist
                         required_group = request_parser.add_argument_group(
                             title='Required variable arguments',
-                            description='Variables that have no default value in the active profile (' + profile.name + ')'
+                            description='Variables that have no default value in the active profile ' +
+                                        '(' + profile.name + ')'
                         )
                     required_group.add_argument(variable)
 
@@ -340,8 +342,6 @@ class ArgParser():
         return empty_profile
 
     def _add_global_options(self, parser):
-        #parser.add_argument('--verbose', '-v', action='store_true', help='increase output verbosity')
-
         profiles_group = parser.add_argument_group(
             title='Profiles',
             description='Indicates which profile to use, if any, for variable substitution'
@@ -404,11 +404,11 @@ def main():
     argparser = ArgParser(config.get_requests(), config.get_profiles(), config.get_options())
     args = argparser.parse_args()
 
-    # Substitue variables in request
+    # Substitute variables in request
     request = config.get_request(args.request)
     request.substitute_variables(vars(args))
 
-    # Overwite config file options with CLI options
+    # Overwrite config file options with CLI options
     options = config.get_options()
     options.update(vars(args))
 
