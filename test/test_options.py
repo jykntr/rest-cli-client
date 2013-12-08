@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from unittest import TestCase
@@ -39,6 +40,11 @@ class TestOptions(TestCase):
         o = Options(dictionary)
         self.assertTrue(o.get_verify())
 
+    def test_str(self):
+        dictionary = {'proxies': {'http': 'http://user:pass@10.10.1.10:1080'}, 'verify': False}
+        o = Options(dictionary)
+        self.assertEqual("Options: " + os.linesep + "{'verify': False, 'proxies': {'http': 'http://user:pass@10.10.1.10:1080'}}",
+                         o.__str__())
 
 def suite():
     return unittest.TestLoader().loadTestsFromTestCase(TestOptions)
