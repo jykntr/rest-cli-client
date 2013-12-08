@@ -24,7 +24,7 @@ class Options():
                 # Variable proxy is a list of proxies
                 for proxy in odict[var]:
                     l = proxy.split(':', 1)
-                    self.options['proxies'][l[0]] = l[1]
+                    self.options['proxies'][l[0]] = proxy
 
     def __str__(self):
         s = 'Options: ' + os.linesep
