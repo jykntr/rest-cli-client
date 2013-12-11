@@ -38,7 +38,7 @@ def main():
 
     # Overwrite config file options with CLI options
     options = config.get_options()
-    options.update(vars(args))
+    options.update_from_cli_arguments(vars(args))
 
     # Make request
     r = requests.request(
