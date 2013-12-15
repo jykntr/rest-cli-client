@@ -1,6 +1,9 @@
 import argparse
 from profile import Profile
 
+PROXY = 'proxy'
+VERIFY = 'verify'
+
 
 class CliParser():
     def __init__(self, requests, profiles, options):
@@ -48,7 +51,7 @@ class CliParser():
                 description='Options to use when making HTTP requests'
             )
             options_group.add_argument(
-                '--proxy',
+                '--' + PROXY,
                 default=[],
                 action='append',
                 metavar='protocol:host:port',
@@ -57,15 +60,15 @@ class CliParser():
             )
             no_verify_mx_group = options_group.add_mutually_exclusive_group()
             no_verify_mx_group.add_argument(
-                '--verify',
-                dest='verify',
+                '--' + VERIFY,
+                dest=VERIFY,
                 action='store_true',
                 help='Verify SSL certificates.'
             )
             no_verify_mx_group.add_argument(
-                '--no-verify',
+                '--no-' + VERIFY,
                 action='store_false',
-                dest='verify',
+                dest=VERIFY,
                 help='Do not verify SSL certificates.'
             )
             # Get default verify setting from options

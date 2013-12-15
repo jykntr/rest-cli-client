@@ -1,4 +1,5 @@
 import os
+import cliparser
 
 
 class Options():
@@ -12,12 +13,12 @@ class Options():
         return self.options.get('proxies', {})
 
     def get_verify(self):
-        return self.options.get('verify', True)
+        return self.options.get(cliparser.VERIFY, True)
 
     def update_from_cli_arguments(self, args_dictionary):
         # loop through keys in CLI args dictionary
         for key in args_dictionary:
-            if key == 'verify':
+            if key == cliparser.VERIFY:
                 self.options[key] = args_dictionary[key]
             # The proxy key will contain a list of proxies in the format:
             # ['http:http://proxy.com:8080', 'https:https://proxy.com:8081']
@@ -25,7 +26,7 @@ class Options():
             # Proxy key is usually passed with an empty list if no proxy was
             # specified, so only update the proxies if at least one proxy is
             # in the list.
-            if key == 'proxy' and len(args_dictionary.get('proxy', [])) > 0:
+            if key == cliparser.PROXY and len(args_dictionary.get(cliparser.PROXY, [])) > 0:
                 self.options['proxies'] = {}
 
                 # Variable proxy is a list of proxies
