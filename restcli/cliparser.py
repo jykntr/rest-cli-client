@@ -54,8 +54,8 @@ class CliParser():
                 '--' + PROXY,
                 default=[],
                 action='append',
-                metavar='protocol:host:port',
-                help='Maps a protocol to a proxy.  For example: "http:http://user:pass@proxy.url.com:8080".  ' +
+                metavar='host:port',
+                help='Maps a protocol to a proxy.  For example: "http://user:pass@proxy.url.com:8080".  ' +
                      'Multiple proxies can be defined for different protocols.'
             )
             no_verify_mx_group = options_group.add_mutually_exclusive_group()

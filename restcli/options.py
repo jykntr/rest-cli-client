@@ -21,7 +21,7 @@ class Options():
             if key == cliparser.VERIFY:
                 self.options[key] = args_dictionary[key]
             # The proxy key will contain a list of proxies in the format:
-            # ['http:http://proxy.com:8080', 'https:https://proxy.com:8081']
+            # ['http://proxy.com:8080', 'https://proxy.com:8081']
             #
             # Proxy key is usually passed with an empty list if no proxy was
             # specified, so only update the proxies if at least one proxy is
@@ -32,9 +32,9 @@ class Options():
                 # Variable proxy is a list of proxies
                 for proxy in args_dictionary[key]:
                     # Store proxies as dictionary with protocol as a key and
-                    # host as the value.
+                    # protocol plus host as the value.
                     l = proxy.split(':', 1)
-                    self.options['proxies'][l[0]] = l[1]
+                    self.options['proxies'][l[0]] = proxy
 
     def __str__(self):
         s = 'Options: ' + os.linesep

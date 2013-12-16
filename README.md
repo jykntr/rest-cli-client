@@ -62,9 +62,9 @@ Examples
         Options:
           Options to use when making HTTP requests
 
-          --proxy protocol:host:port
+          --proxy host:port
                                 Maps a protocol to a proxy. For example:
-                                "http:proxy.url.com:8080". Multiple proxies can be
+                                "http://proxy.url.com:8080". Multiple proxies can be
                                 defined for different protocols.
           --verify              Verify SSL certificates.
           --no-verify           Do not verify SSL certificates.
