@@ -33,12 +33,12 @@ def main():
     args = argparser.parse_args()
 
     # Substitute variables in request
-    request = config.get_request(args.request)
-    request.substitute_variables(vars(args))
+    request = config.get_request(args['request'])
+    request.substitute_variables(args)
 
     # Overwrite config file options with CLI options
     options = config.get_options()
-    options.update_from_cli_arguments(vars(args))
+    options.update_from_cli_arguments(args)
 
     # Make request
     r = requests.request(
@@ -47,7 +47,7 @@ def main():
         headers=request.headers,
         params=request.params,
         data=request.body,
-        verify=args.verify,
+        verify=args['verify'],
         proxies=options.get_proxies()
     )
 

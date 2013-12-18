@@ -64,7 +64,7 @@ class TestOptions(TestCase):
 
     def test_update_proxy(self):
         config_file_proxy = {'http': 'http://user:pass@10.10.1.10:1080'}
-        cli_proxy = ['http://10.10.1.10:1080']
+        cli_proxy = {'http': 'http://10.10.1.10:1080'}
         dictionary = {'proxies': config_file_proxy}
 
         # Don't overwrite a proxy if dictionary doesn't include a 'proxy' value

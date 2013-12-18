@@ -106,7 +106,23 @@ class CliParser():
                     required_group.add_argument(variable)
 
     def parse_args(self):
-        self.args = self.parser.parse_args()
+        dictionary_args = vars(self.parser.parse_args())
+
+        # The proxy key will contain a list of proxies in the format:
+        # ['http://proxy.com:8080', 'https://proxy.com:8081']
+
+        # Remove the list of proxies from the cli args and put an
+        # empty dictionary in its place.
+        proxy_list = dictionary_args.pop(PROXY, [])
+        dictionary_args[PROXY] = {}
+
+        for proxy in proxy_list:
+            # Split the proxy into protocol and hostname
+            split_proxy = proxy.split(':', 1)
+
+            dictionary_args[PROXY][split_proxy[0]] = proxy
+
+        self.args = dictionary_args
         return self.args
 
     def get_profile(self, default):
