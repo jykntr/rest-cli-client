@@ -48,4 +48,34 @@ class TestRequest(unittest.TestCase):
 
         #Make sure only the required fields cause exception
         valid = {'method': 'get', 'name': 'namevalue', 'url': 'http://httpbin.org/get'}
-      
+
+    def test_variables(self):
+        request_dictionary = {'method': 'get',
+                              'name': 'name',
+                              'url': '{{urlvar}}',
+                              'headers': {
+                                  'myheader': '{{headervar}}',
+                                  'myheader2': '{{header2var}}',
+                              },
+                              'params': {
+                                  'myparam': '{{paramvar}}'
+                              },
+                              'body': '{{bodyvar}}'
+        }
+
+        request = Request(request_dictionary)
+
+        variable_list = request.get_variable_list()
+        self.assertListEqual(['header2var', 'headervar', 'urlvar', 'paramvar', 'bodyvar'],
+                             variable_list)
+
+        variables = {'urlvar': 'urlvalue', 'headervar': 'headervalue', 'header2var': 'header2value',
+                     'paramvar': 'paramvalue', 'bodyvar': 'bodyvalue'}
+        request.substitute_variables(variables)
+        self.assertEqual('Request name: name' + os.linesep +
+                         '  Method    : get' + os.linesep +
+                         '  Headers   : myheader: headervalue, myheader2: header2value' + os.linesep +
+                         '  URL       : urlvalue' + os.linesep +
+                         '  Parameters: myparam=paramvalue' + os.linesep +
+                         '  Body      : bodyvalue',
+                         request.__str__())
