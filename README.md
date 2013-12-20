@@ -6,7 +6,7 @@ A Python based command line REST client that makes saved REST requests and subst
 
 Setup
 -----
-1. Copy the sample restcli.conf file to one of the following locations:
+1. Copy the sample restcli.conf file (see bottow of README.md) to one of the following locations:
  * The directory pointed to by the RESTCLI_CONF environment variable
  * The current directory you will be running the command from
  * Your users home directory
@@ -97,3 +97,64 @@ Examples
           },
           "origin": "152.219.153.75"
         }
+
+
+Sample restcli.conf
+-------------------
+    {
+      "default_profile": "testprofile",
+      "options": {
+        "verify": false,
+        "proxies": {"http": "http://whatever.com:8080"}
+      },
+      "profiles": [
+        {
+          "name": "testprofile",
+          "headervar": "myheadervar",
+          "paramvar": "myparamvar"
+        }
+      ],
+      "requests": [
+        {
+          "method": "get",
+          "name": "httpbinvars",
+          "url": "http://httpbin.org/get",
+          "headers": {
+            "myheader1": "{{headervar}}",
+            "myheader2": "myvalue2"
+          },
+          "params": {
+            "myparam1": "{{paramvar}}",
+            "myparam2": "paramvalue2"
+          }
+        },
+        {
+          "method": "get",
+          "name": "httpbin",
+          "body": "",
+          "url": "http://httpbin.org/get",
+          "headers": {
+            "myheader1": "myvalue1",
+            "myheader2": "myvalue2"
+          },
+          "params": {
+            "myparam1": "paramvalue1",
+            "myparam2": "paramvalue2"
+          }
+        },
+        {
+          "method": "put",
+          "name": "httpbinput",
+          "body": "{\"hello\" : \"world\"}",
+          "url": "http://httpbin.org/put",
+          "headers": {
+            "myheader1": "myvalue1",
+            "myheader2": "myvalue2"
+          },
+          "params": {
+            "myparam1": "paramvalue1",
+            "myparam2": "paramvalue2"
+          }
+        }
+      ]
+    }
