@@ -5,6 +5,7 @@ import colorama
 import json
 import os
 import requests
+import sys
 
 from config import Config
 from cliparser import CliParser
@@ -19,14 +20,19 @@ def find_default_config_file():
             pass
 
     raise Exception('Could not find restcli.conf file in RESTCLI_CONF environment variable, ' +
-                    'the current directory or your home directory.')
+                    'the current directory or your home directory.  You can find an example ' +
+                    'in the installation directory of restcli.')
 
 
 def main():
     colorama.init()
 
     # load config file
-    config = Config(find_default_config_file())
+    try:
+        config = Config(find_default_config_file())
+    except Exception, e:
+        print e.message
+        sys.exit(-1)
 
     # parse arguments
     argparser = CliParser(config.get_requests(), config.get_profiles(), config.get_options())
