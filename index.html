@@ -51,7 +51,7 @@
 
 <ol>
 <li>
-<p>Copy the sample restcli.conf file to one of the following locations:</p>
+<p>Copy the sample restcli.conf file (see bottow of README.md) to one of the following locations:</p>
 
 <ul>
 <li>The directory pointed to by the RESTCLI_CONF environment variable</li>
@@ -112,9 +112,9 @@ Profiles:
 Options:
   Options to use when making HTTP requests
 
-  --proxy protocol:host:port
+  --proxy host:port
                         Maps a protocol to a proxy. For example:
-                        "http:proxy.url.com:8080". Multiple proxies can be
+                        "http://proxy.url.com:8080". Multiple proxies can be
                         defined for different protocols.
   --verify              Verify SSL certificates.
   --no-verify           Do not verify SSL certificates.
@@ -151,7 +151,67 @@ Required variable arguments:
 }
 </code></pre>
 </li>
-</ol>
+</ol><h2>
+<a name="sample-restcliconf" class="anchor" href="#sample-restcliconf"><span class="octicon octicon-link"></span></a>Sample restcli.conf</h2>
+
+<pre><code>{
+  "default_profile": "testprofile",
+  "options": {
+    "verify": false,
+    "proxies": {"http": "http://whatever.com:8080"}
+  },
+  "profiles": [
+    {
+      "name": "testprofile",
+      "headervar": "myheadervar",
+      "paramvar": "myparamvar"
+    }
+  ],
+  "requests": [
+    {
+      "method": "get",
+      "name": "httpbinvars",
+      "url": "http://httpbin.org/get",
+      "headers": {
+        "myheader1": "{{headervar}}",
+        "myheader2": "myvalue2"
+      },
+      "params": {
+        "myparam1": "{{paramvar}}",
+        "myparam2": "paramvalue2"
+      }
+    },
+    {
+      "method": "get",
+      "name": "httpbin",
+      "body": "",
+      "url": "http://httpbin.org/get",
+      "headers": {
+        "myheader1": "myvalue1",
+        "myheader2": "myvalue2"
+      },
+      "params": {
+        "myparam1": "paramvalue1",
+        "myparam2": "paramvalue2"
+      }
+    },
+    {
+      "method": "put",
+      "name": "httpbinput",
+      "body": "{\"hello\" : \"world\"}",
+      "url": "http://httpbin.org/put",
+      "headers": {
+        "myheader1": "myvalue1",
+        "myheader2": "myvalue2"
+      },
+      "params": {
+        "myparam1": "paramvalue1",
+        "myparam2": "paramvalue2"
+      }
+    }
+  ]
+}
+</code></pre>
       </section>
 
     </div>
