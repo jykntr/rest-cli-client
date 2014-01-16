@@ -2,6 +2,7 @@ import json
 from options import Options
 from profile import Profile
 from request import Request
+from os import linesep
 
 
 class Config():
@@ -11,6 +12,9 @@ class Config():
                 self.config = json.load(config_file)
         except IOError:
             raise Exception('Could not open config file "' + file_path + '"')
+        except ValueError as e:
+            raise Exception('Could not parse configuration file located at ' + file_path + ':' + linesep + '  ' + e.message)
+
 
         self.requests = self.parse_requests()
         self.profiles = self.parse_profiles()
