@@ -18,6 +18,6 @@ setup(
     description='Command line REST request tool',
     license='MIT',
     keywords='rest http',
-    url='http://jykntr.github.io/rest-cli-client/',
+    url='https://github.com/jykntr/rest-cli-client',
     download_url='https://github.com/jykntr/rest-cli-client/releases/tag/v' + restcli.__version__
 )
