@@ -3,6 +3,7 @@
 
 import colorama
 import json
+import logging
 import os
 import requests
 import sys
@@ -10,12 +11,16 @@ import sys
 from config import Config
 from cliparser import CliParser
 
+log = logging.getLogger(__name__)
 
 def find_default_config_file():
     for directory in os.environ.get('RESTCLI_CONF'), os.curdir, os.path.expanduser('~'):
         try:
-            if os.path.isfile(os.path.join(directory, 'restcli.conf')):
-                return os.path.join(directory, 'restcli.conf')
+            full_path = os.path.join(directory, 'restcli.conf')
+            log.debug("Attempting to find file %s", full_path)
+            if os.path.isfile(full_path):
+                log.debug("Using config file %s", full_path)
+                return full_path
         except:
             pass
 
