@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import httplib
 
 import colorama
 import json
@@ -29,6 +29,15 @@ def find_default_config_file():
                     'in the installation directory of restcli.')
 
 
+def setup_logger(level):
+    if (level == 0 or level == None):
+        logLevel = logging.WARNING
+    elif (level == 1):
+        logLevel = logging.INFO
+    elif (level >= 2):
+        logLevel = logging.DEBUG
+
+
 def main():
     colorama.init()
 
@@ -43,13 +52,22 @@ def main():
     argparser = CliParser(config.get_requests(), config.get_profiles(), config.get_options())
     args = argparser.parse_args()
 
+    setup_logger(args.get('verbose'))
+    log.debug('Parsed arguments: %s', args)
+
+
     # Substitute variables in request
     request = config.get_request(args['request'])
+    log.debug('Raw request: %s', request)
     request.substitute_variables(args)
+    log.info('Request: %s', request)
 
     # Overwrite config file options with CLI options
     options = config.get_options()
+    log.debug('Raw options: %s', options)
     options.update_from_cli_arguments(args)
+    log.info('Options: %s', options)
+
 
     # Make request
     r = requests.request(
