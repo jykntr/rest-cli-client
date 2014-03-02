@@ -1,17 +1,19 @@
 #!/usr/bin/env python
-import httplib
 
-import colorama
 import json
 import logging
 import os
-import requests
 import sys
+
+import colorama
+import requests
 
 from config import Config
 from cliparser import CliParser
 
+
 log = logging.getLogger(__name__)
+
 
 def find_default_config_file():
     for directory in os.environ.get('RESTCLI_CONF'), os.curdir, os.path.expanduser('~'):
@@ -30,12 +32,12 @@ def find_default_config_file():
 
 
 def setup_logger(debug):
-    if (debug):
-        logLevel = logging.DEBUG
+    if debug:
+        log_level = logging.DEBUG
     else:
-        logLevel = logging.CRITICAL
+        log_level = logging.CRITICAL
 
-    logging.basicConfig(level=logLevel)
+    logging.basicConfig(level=log_level)
 
 
 def main():
@@ -55,19 +57,17 @@ def main():
     setup_logger(args.get('verbose'))
     log.debug('Parsed arguments: %s', args)
 
-
     # Substitute variables in request
     request = config.get_request(args['request'])
     log.debug('Raw request: %s', request)
     request.substitute_variables(args)
-    log.info('Request: %s', request)
+    log.debug('Request: %s', request)
 
     # Overwrite config file options with CLI options
     options = config.get_options()
     log.debug('Raw options: %s', options)
     options.update_from_cli_arguments(args)
-    log.info('Options: %s', options)
-
+    log.debug('Options: %s', options)
 
     # Make request
     r = requests.request(
