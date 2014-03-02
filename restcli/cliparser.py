@@ -3,7 +3,7 @@ from profile import Profile
 
 PROXY = 'proxy'
 VERIFY = 'verify'
-VERBOSE = 'verbose'
+DEBUG = 'verbose'
 
 
 class CliParser():
@@ -171,10 +171,10 @@ class CliParser():
         )
 
         parser.add_argument(
-            '--' + VERBOSE,
-            '-v',
-            action='count',
-            help='Increase output verbosity (-v | -vv)'
+            '--' + DEBUG,
+            '-d',
+            action='store_true',
+            help=argparse.SUPPRESS
         )
 
         return parser

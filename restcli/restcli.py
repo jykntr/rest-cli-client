@@ -29,13 +29,13 @@ def find_default_config_file():
                     'in the installation directory of restcli.')
 
 
-def setup_logger(level):
-    if (level == 0 or level == None):
-        logLevel = logging.WARNING
-    elif (level == 1):
-        logLevel = logging.INFO
-    elif (level >= 2):
+def setup_logger(debug):
+    if (debug):
         logLevel = logging.DEBUG
+    else:
+        logLevel = logging.CRITICAL
+
+    logging.basicConfig(level=logLevel)
 
 
 def main():
